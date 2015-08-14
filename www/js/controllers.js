@@ -3,7 +3,33 @@ angular.module('starter.controllers', [])
     .controller('DashCtrl', function($scope) {
 	
     })
-.controller('AddCtrl', function($scope) {})
+
+    /// for add tab 
+    .controller('AddCtrl', function($scope) {
+	$scope.doSomething = function() {
+	    console.log("here here");
+	    var initialLocation;
+
+	    /*
+	    document.addEventListener("deviceready", function() {
+		// retrieve the DOM element that had the ng-app attribute
+		var domElement = document.getElementById("testbutton");
+		angular.bootstrap(domElement, ["starter"]);
+	    }, false);
+	    */
+	    
+	    navigator.geolocation.getCurrentPosition(function(position) {
+		document.getElementById("disp").innerHTML= "here";
+		initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+		document.getElementById("disp").innerHTML=String(position.coords.latitude);
+		console.log(position.coords.latitude);
+		console.log(position.coords.longitude);
+		
+	    }, function() {
+		handleNoGeolocation(browserSupportFlag);
+	    });
+	};
+    })
 
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
@@ -30,32 +56,47 @@ angular.module('starter.controllers', [])
   };
 })
 
+
+
+////  mapcontroller mapcontroller
 .controller('MapController', function($scope, $ionicLoading, $compile) {
-  $scope.initialize = function() {
-    var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
-    
-    var mapOptions = {
-      center: myLatlng,
-      zoom: 16,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("map"),
-        mapOptions);
+    $scope.initialize = function() {
+	console.log("Andy's code running");
+	var initialLocation;
+	navigator.geolocation.getCurrentPosition(function(position) {
+	    initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+	    map.setCenter(initialLocation);
+	    console.log(position.coords.latitude);
+	    console.log(position.coords.longitude);
+
+	}, function() {
+	    handleNoGeolocation(browserSupportFlag);
+	});
+	
+	
+	var mapOptions = {
+	    center: initialLocation,
+	    zoom: 16,
+	    mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	var map = new google.maps.Map(document.getElementById("map"),
+				      mapOptions);
 
 
-    var marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      title: 'Uluru (Ayers Rock)'
-    });
+	var marker = new google.maps.Marker({
+	    position: initialLocation,
+	    map: map,
+	    title: 'NUS'
+	});
 
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.open(map,marker);
-    });
+	google.maps.event.addListener(marker, 'click', function() {
+	    infowindow.open(map,marker);
+	});
 
-    $scope.map = map;
-  }
-  //google.maps.event.addDomListener(window, 'load', initialize);
+	$scope.map = map;
+    }
+    //google.maps.event.addDomListener(window, 'load', initialize);
 
   
 });
+
