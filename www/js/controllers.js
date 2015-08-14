@@ -17,7 +17,9 @@ angular.module('starter.controllers', [])
 		angular.bootstrap(domElement, ["starter"]);
 	    }, false);
 	    */
-	    
+
+
+	    // this part is only for testing and the test is over
 	    navigator.geolocation.getCurrentPosition(function(position) {
 		document.getElementById("disp").innerHTML= "here";
 		initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
@@ -28,6 +30,9 @@ angular.module('starter.controllers', [])
 	    }, function() {
 		handleNoGeolocation(browserSupportFlag);
 	    });
+
+
+	    
 	};
     })
 
@@ -93,9 +98,10 @@ angular.module('starter.controllers', [])
 	    infowindow.open(map,marker);
 	});
 
+
 	$scope.map = map;
     }
-    //google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.addDomListener(window, 'load', $scope.initialize);
 
   
 });
