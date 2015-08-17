@@ -1,3 +1,8 @@
+
+var apiKey = "AIzaSyAgSu_RnUrEAuc8wDmdtUcfsEsUuDBoyXw&sensor";
+// https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY
+var re = "https://maps.googleapis.com/maps/api/geocode/json?address=National+University+of+Singapore&key=";
+
 angular.module('starter.controllers', [])
 
     .controller('DashCtrl', function($scope) {
@@ -64,7 +69,7 @@ angular.module('starter.controllers', [])
 
 
 ////  mapcontroller mapcontroller
-.controller('MapController', function($scope, $ionicLoading, $compile) {
+.controller('MapController', function($scope, $http,$ionicLoading, $compile) {
     $scope.initialize = function() {
 		console.log("Andy's code running");
 		var initialLocation;
@@ -130,8 +135,23 @@ angular.module('starter.controllers', [])
 			});
 			/////// end of route
 
-			var drawingManager = new google.maps.drawing.DrawingManager();
-			var service = new google.maps.places.PlacesService(map);
+			/// purely to test HTTP request
+			/*
+			$http.get(re+apiKey).
+				then(function(response) {
+					// this callback will be called asynchronously
+					// when the response is available
+					console.log(response.data);
+
+				}, function(response) {
+					// called asynchronously if an error occurs
+					// or server returns response with an error status.
+					console.log("error");
+				});
+				*/
+			/// end of testing
+
+
 			console.log("success");
 		}, function() {
 			handleNoGeolocation(browserSupportFlag);
