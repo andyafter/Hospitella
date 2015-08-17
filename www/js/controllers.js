@@ -66,43 +66,113 @@ angular.module('starter.controllers', [])
 ////  mapcontroller mapcontroller
 .controller('MapController', function($scope, $ionicLoading, $compile) {
     $scope.initialize = function() {
-	console.log("Andy's code running");
-	var initialLocation;
-	navigator.geolocation.getCurrentPosition(function(position) {
-	    initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-	    map.setCenter(initialLocation);
-	    console.log(position.coords.latitude);
-	    console.log(position.coords.longitude);
-
-	}, function() {
-	    handleNoGeolocation(browserSupportFlag);
-	});
-	
-	
-	var mapOptions = {
-	    center: initialLocation,
-	    zoom: 16,
-	    mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
-	var map = new google.maps.Map(document.getElementById("map"),
-				      mapOptions);
+		console.log("Andy's code running");
+		var initialLocation;
+		var mapOptions = {
+			zoom: 16,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
 
 
-	var marker = new google.maps.Marker({
-	    position: initialLocation,
-	    map: map,
-	    title: 'NUS'
-	});
+		$scope.markers = [];
+		var map = new google.maps.Map(document.getElementById("map"),
+						  mapOptions);
 
-	google.maps.event.addListener(marker, 'click', function() {
-	    infowindow.open(map,marker);
-	});
+		navigator.geolocation.getCurrentPosition(function(position) {
+			initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+			map.setCenter(initialLocation);
+
+			var marker = new google.maps.Marker({
+			position: initialLocation,
+			map: map,
+			title: 'NUS'
+			});
+
+			google.maps.event.addListener(marker, 'click', function() {
+			infowindow.open(map,marker);
+			});
+			// 1.305635, 103.773031
+
+			initialLocation = new google.maps.LatLng(1.305635, 103.773031);
+			marker = new google.maps.Marker({
+			position: initialLocation,
+			map: map,
+			title: 'NUS'
+			});
+
+			google.maps.event.addListener(marker, 'click', function() {
+			infowindow.open(map,marker);
+			});
 
 
-	$scope.map = map;
+			$scope.map = map;
+
+			// these are all for the route finding
+			var directionsDisplay = new google.maps.DirectionsRenderer();
+			directionsDisplay.setMap(map);
+
+			// this one is for the route
+			var haight = new google.maps.LatLng(1.305635, 103.773031);
+			var oceanBeach = new google.maps.LatLng(1.319153, 103.774423);
+			var directionsService = new google.maps.DirectionsService();
+			var request = {
+			origin: haight,
+			destination: oceanBeach,
+			// Note that Javascript allows us to access the constant
+			// using square brackets and a string value as its
+			// "property."
+			travelMode: google.maps.TravelMode["DRIVING"]
+			};
+			directionsService.route(request, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				directionsDisplay.setDirections(response);
+			}
+			});
+			/////// end of route
+
+			var drawingManager = new google.maps.drawing.DrawingManager();
+			var service = new google.maps.places.PlacesService(map);
+			console.log("success");
+		}, function() {
+			handleNoGeolocation(browserSupportFlag);
+		});
     }
     //google.maps.event.addDomListener(window, 'load', $scope.initialize);
 
   
-});
+})
+
+
+.controller('ItemController', ['$ionicFilterBar', ItemController])
+
+
+function ItemController($ionicFilterBar) {
+	var vm = this,
+		items = [],
+		filterBarInstance;
+
+	for (var i = 1; i <= 1000; i++) {
+		var itemDate = moment().add(i, 'days');
+
+		var item = {
+			description: 'Description for item ' + i,
+			date: itemDate.toDate()
+		};
+		items.push(item);
+	}
+
+	vm.items = items;
+
+	vm.showFilterBar = function () {
+		filterBarInstance = $ionicFilterBar.show({
+			items: vm.items,
+			update: function (filteredItems) {
+				vm.items = filteredItems;
+			},
+			filterProperties: 'description'
+		});
+	};
+
+	return vm;
+}
 

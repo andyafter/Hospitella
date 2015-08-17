@@ -1,37 +1,20 @@
-
-<ion-view view-title="Dashboard">
-  <ion-content class="padding">
-    <div class="list card">
-      <div class="item item-divider">Recent Updates</div>
-      <div class="item item-body">
-        <div>
-          There is a fire in <b>sector 3</b>
-        </div>
-      </div>
+<ion-pane ng-controller="ItemController as vm">
+  <ion-header-bar class="bar-positive">
+    <h1 class="title">Group By Month & Year</h1>
+    <div class="buttons">
+      <button class="button button-icon ion-android-search"
+              ng-click="vm.showFilterBar()"></button>
     </div>
-    <div class="list card">
-      <div class="item item-divider">Health</div>
-      <div class="item item-body">
-        <div>
-          You ate an apple today!
-        </div>
+  </ion-header-bar>
+  <ion-content class="has-header">
+    <ion-list>
+      <div collection-repeat="item in vm.items | groupByMonthYear" divider-collection-repeat>
+        <ion-item>
+          <div>{{ item.description }}</div>
+          <div>{{ item.date | date:'dd-MM-yyyy' }}</div>
+        </ion-item>
       </div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">Upcoming</div>
-      <div class="item item-body">
-        <div id="disp">
-          You have <b>29</b> meetings on your calendar tomorrow.
-        </div>
-      </div>
-    </div>
-    
-
-      <button class="button" id="testbutton" ng-click="doSomething()">
-        I'm a button on the primary of the navbar!
-      </button>
-
-    
+    </ion-list>
   </ion-content>
-</ion-view>
+</ion-pane>
 
