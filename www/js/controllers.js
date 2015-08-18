@@ -3,6 +3,8 @@ var apiKey = "AIzaSyBwA0f-yciWz419RzX1769_SGuZrzJ4Fe8";
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY
 var re = "https://maps.googleapis.com/maps/api/geocode/json?address=National+University+of+Singapore&key=";
 
+var styles = [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}];
+
 angular.module('starter.controllers', [])
 
     .controller('DashCtrl', function($scope) {
@@ -22,7 +24,6 @@ angular.module('starter.controllers', [])
 		angular.bootstrap(domElement, ["starter"]);
 	    }, false);
 	    */
-
 
 	    // this part is only for testing and the test is over
 	    navigator.geolocation.getCurrentPosition(function(position) {
@@ -161,27 +162,6 @@ angular.module('starter.controllers', [])
 			///// end of search Box
 
 			/// styles
-			var styles = [
-				{
-					stylers: [
-						{ hue: "#00ffe6" },
-						{ saturation: -20 }
-					]
-				},{
-					featureType: "road",
-					elementType: "geometry",
-					stylers: [
-						{ lightness: 100 },
-						{ visibility: "simplified" }
-					]
-				},{
-					featureType: "road",
-					elementType: "labels",
-					stylers: [
-						{ visibility: "off" }
-					]
-				}
-			];
 			map.set('styles', styles);
 			/// end of styles
 
@@ -190,18 +170,16 @@ angular.module('starter.controllers', [])
 			// these are all for the route finding
 			var directionsDisplay = new google.maps.DirectionsRenderer();
 			directionsDisplay.setMap(map);
-
-			// this one is for the route
 			var haight = new google.maps.LatLng(1.305635, 103.773031);
 			var oceanBeach = new google.maps.LatLng(1.319153, 103.774423);
 			var directionsService = new google.maps.DirectionsService();
 			var request = {
-			origin: haight,
-			destination: oceanBeach,
-			// Note that Javascript allows us to access the constant
-			// using square brackets and a string value as its
-			// "property."
-			travelMode: google.maps.TravelMode["DRIVING"]
+				origin: haight,
+				destination: oceanBeach,
+				// Note that Javascript allows us to access the constant
+				// using square brackets and a string value as its
+				// "property."
+				travelMode: google.maps.TravelMode["DRIVING"]
 			};
 			directionsService.route(request, function(response, status) {
 			if (status == google.maps.DirectionsStatus.OK) {
