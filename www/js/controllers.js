@@ -1,5 +1,5 @@
 
-var apiKey = "AIzaSyAgSu_RnUrEAuc8wDmdtUcfsEsUuDBoyXw&sensor";
+var apiKey = "AIzaSyBwA0f-yciWz419RzX1769_SGuZrzJ4Fe8";
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY
 var re = "https://maps.googleapis.com/maps/api/geocode/json?address=National+University+of+Singapore&key=";
 
@@ -136,6 +136,7 @@ angular.module('starter.controllers', [])
 			/////// end of route
 
 			/// purely to test HTTP request
+
 			/*
 			$http.get(re+apiKey).
 				then(function(response) {
@@ -148,7 +149,8 @@ angular.module('starter.controllers', [])
 					// or server returns response with an error status.
 					console.log("error");
 				});
-				*/
+			*/
+
 			/// end of testing
 
 
@@ -160,5 +162,10 @@ angular.module('starter.controllers', [])
     //google.maps.event.addDomListener(window, 'load', $scope.initialize);
 
   
-});
+})
+
+.controller('SearchMap', function($scope,$http,$ionicLoading, $compile){
+		console.log("only for search map");
+		
+	});
 
