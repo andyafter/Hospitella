@@ -3,58 +3,45 @@ var apiKey = "AIzaSyBwA0f-yciWz419RzX1769_SGuZrzJ4Fe8";
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY
 var re = "https://maps.googleapis.com/maps/api/geocode/json?address=National+University+of+Singapore&key=";
 
-var styles = [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}];
+var styles = [{"featureType":"landscape",
+	"stylers":[{"saturation":-100},
+		{"lightness":65},
+		{"visibility":"on"}]},
+	{"featureType":"poi",
+		"stylers":[{"saturation":-100},
+			{"lightness":51},
+			{"visibility":"simplified"}]},
+	{"featureType":"road.highway",
+		"stylers":[{"saturation":-100},
+			{"visibility":"simplified"}]},
+	{"featureType":"road.arterial",
+		"stylers":[{"saturation":-100},
+			{"lightness":30},
+			{"visibility":"on"}]},
+	{"featureType":"road.local",
+		"stylers":[{"saturation":-100},
+			{"lightness":40},
+			{"visibility":"on"}]},
+	{"featureType":"transit",
+		"stylers":[{"saturation":-100},
+			{"visibility":"simplified"}]},
+	{"featureType":"administrative.province",
+		"stylers":[{"visibility":"off"}]},
+	{"featureType":"water",
+		"elementType":"labels",
+		"stylers":[{"visibility":"on"},
+			{"lightness":-25},
+			{"saturation":-100}]},
+	{"featureType":"water",
+		"elementType":"geometry",
+		"stylers":[{"hue":"#ffff00"},
+			{"lightness":-25},
+			{"saturation":-97}]}];
 
 angular.module('starter.controllers', [])
 
-    .controller('DashCtrl', function($scope) {
-	
-    })
+.controller('DashCtrl', function($scope) {
 
-    /// for add tab 
-    .controller('AddCtrl', function($scope) {
-	$scope.doSomething = function() {
-	    console.log("here here");
-	    var initialLocation;
-
-	    /*
-	    document.addEventListener("deviceready", function() {
-		// retrieve the DOM element that had the ng-app attribute
-		var domElement = document.getElementById("testbutton");
-		angular.bootstrap(domElement, ["starter"]);
-	    }, false);
-	    */
-
-	    // this part is only for testing and the test is over
-	    navigator.geolocation.getCurrentPosition(function(position) {
-		document.getElementById("disp").innerHTML= "here";
-		initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-		document.getElementById("disp").innerHTML=String(position.coords.latitude);
-		console.log(position.coords.latitude);
-		console.log(position.coords.longitude);
-		
-	    }, function() {
-		handleNoGeolocation(browserSupportFlag);
-	    });
-
-
-	    
-	};
-    })
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
@@ -76,7 +63,8 @@ angular.module('starter.controllers', [])
 		var initialLocation;
 		var mapOptions = {
 			zoom: 16,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			mapTypeControl : false
 		};
 
 
@@ -182,14 +170,16 @@ angular.module('starter.controllers', [])
 				travelMode: google.maps.TravelMode["DRIVING"]
 			};
 			directionsService.route(request, function(response, status) {
-			if (status == google.maps.DirectionsStatus.OK) {
-				directionsDisplay.setDirections(response);
-			}
+				if (status == google.maps.DirectionsStatus.OK) {
+					directionsDisplay.setDirections(response);
+				}
 			});
+			var geocoder = new google.maps.Geocoder();
+			geocodeAddress(geocoder, map);
 			/////// end of route
 
 			/// purely to test HTTP request
-
+			/// this can be used later
 			/*
 			$http.get(re+apiKey).
 				then(function(response) {
@@ -205,8 +195,6 @@ angular.module('starter.controllers', [])
 			*/
 
 			/// end of testing
-
-
 			console.log("success");
 		}, function() {
 			handleNoGeolocation(browserSupportFlag);
@@ -214,8 +202,23 @@ angular.module('starter.controllers', [])
     }
     //google.maps.event.addDomListener(window, 'load', $scope.initialize);
 
-  
 });
 
 
-
+// here is an example of using address to get geodata.
+function geocodeAddress(geocoder, resultsMap) {
+	var address = "national university of singapore"
+	//var address = "BLK 501 BISHAN STREET 11 #01-376";
+	geocoder.geocode({'address': address}, function(results, status) {
+		if (status === google.maps.GeocoderStatus.OK) {
+			resultsMap.setCenter(results[0].geometry.location);
+			var marker = new google.maps.Marker({
+				map: resultsMap,
+				position: results[0].geometry.location
+			});
+		} else {
+			// if there is no result the code will go to this function.
+			alert('Geocode was not successful for the following reason: ' + status);
+		}
+	});
+}

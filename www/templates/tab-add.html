@@ -1,5 +1,15 @@
 <ion-view view-title="Add">
-  <ion-content ng-controller="DCtrl" ng-init="init()">
-    Inside Here
+  <ion-content ng-controller="AddCtrl" ng-init="init()">
+    <div class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="{{name}}">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Last Name">
+      </label>
+      <label class="item item-input" ng-repeat="param in paramlist" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
+        <input type="text" placeholder="{{param}}">
+      </label>
+    </div>
   </ion-content>
 </ion-view>

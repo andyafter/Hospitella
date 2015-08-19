@@ -5,7 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','starter.ctrl'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
+  "starter.addclinics",'starter.nearby'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -66,7 +67,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','s
       url: '/chats',
       views: {
         'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
+          templateUrl: 'templates/tab-nearby.html',
           controller: 'ChatsCtrl'
         }
       }
