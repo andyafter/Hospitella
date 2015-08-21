@@ -3,12 +3,13 @@
  */
 angular.module('starter.queue', [])
 
-    .controller('QueueCtrl', function($scope,$ionicHistory,$cordovaDevice) {
+    .controller('QueueCtrl', function($scope,$ionicHistory) {
         console.log("just to test all these stuff");
+        console.log(device.name);
         $scope.create = function() {
             /* $location.path('/tab/newpost'); */   /* this variant doesnt work */
             $state.go("/tab/queue");
-            console.log($cordovaDevice.getUUID());
+
         };
         $scope.backToMap = function() {
             $ionicHistory.goBack();
