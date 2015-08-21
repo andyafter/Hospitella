@@ -23,20 +23,6 @@ var styles = [{"featureType":"landscape",
 		{"lightness":11.200000000000017},{"gamma":1}]}];
 
 angular.module('starter.controllers', [])
-
-.controller('QueueCtrl', function($scope,$ionicHistory) {
-	console.log("just to test all these stuff");
-	$scope.create = function() {
-		/* $location.path('/tab/newpost'); */   /* this variant doesnt work */
-		$state.go("/tab/queue");
-	};
-	$scope.backToMap = function() {
-		$ionicHistory.goBack();
-	};
-})
-
-
-
 .controller('AccountCtrl', function($scope) {
   $scope.settings = {
     enableFriends: true
@@ -91,7 +77,7 @@ angular.module('starter.controllers', [])
 			//// link above have information that you are gonna need to try
 
 			var constring = "";
-			constring = '<button ng-click="testfun()">TestFun</button>';
+			constring = '<button class="button button-small button-outline button-positive" ng-click="testfun()">Queue for this clinic</button>';
 			var compiled = $compile(constring)($scope);
 			var infowindow = new google.maps.InfoWindow({
 				content: compiled[0]
