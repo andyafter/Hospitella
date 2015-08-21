@@ -24,19 +24,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
+
+  $ionicConfigProvider.views.maxCache(5);
+    // note that you can also chain configs
+  $ionicConfigProvider.backButton.previousTitleText(false);
   $stateProvider
 
   // setup an abstract state for the tabs directive
     .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
+      url: '/tab',
+      abstract: true,
+      templateUrl: 'templates/tabs.html'
     })
 
     
@@ -46,7 +50,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
   .state('tab.dash', {
     url: '/dash',
     views: {
-      'tab-dash': {
+      'tab-map': {
         templateUrl: 'templates/tab-dash.html',
         controller: 'MapController'
       }
@@ -72,22 +76,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
         }
       }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
+  .state('tab.chat-detail', {
+    url: '/chats/:chatId',
+    views: {
+      'tab-chats': {
+        templateUrl: 'templates/chat-detail.html',
+        controller: 'ChatDetailCtrl'
       }
-    })
-
+    }
+  })
   .state('tab.account', {
     url: '/account',
     views: {
       'tab-account': {
         templateUrl: 'templates/tab-account.html',
         controller: 'AccountCtrl'
+      }
+    }
+  })
+  .state('tab.queue', {
+    url: '/queue',
+    views: {
+      'tab-map': {
+        templateUrl: 'templates/queue.html',
+        controller: 'QueueCtrl'
       }
     }
   });

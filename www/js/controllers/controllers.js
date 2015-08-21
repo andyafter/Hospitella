@@ -1,52 +1,41 @@
 
-var apiKey = "AIzaSyBwA0f-yciWz419RzX1769_SGuZrzJ4Fe8";
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY
-var re = "https://maps.googleapis.com/maps/api/geocode/json?address=National+University+of+Singapore&key=";
+
+var serverurl = "http://10.10.3.18:5000/"
 
 var styles = [{"featureType":"landscape",
-	"stylers":[{"saturation":-100},
-		{"lightness":65},
-		{"visibility":"on"}]},
-	{"featureType":"poi",
-		"stylers":[{"saturation":-100},
-			{"lightness":51},
-			{"visibility":"simplified"}]},
-	{"featureType":"road.highway",
-		"stylers":[{"saturation":-100},
-			{"visibility":"simplified"}]},
-	{"featureType":"road.arterial",
-		"stylers":[{"saturation":-100},
-			{"lightness":30},
-			{"visibility":"on"}]},
-	{"featureType":"road.local",
-		"stylers":[{"saturation":-100},
-			{"lightness":40},
-			{"visibility":"on"}]},
-	{"featureType":"transit",
-		"stylers":[{"saturation":-100},
-			{"visibility":"simplified"}]},
-	{"featureType":"administrative.province",
-		"stylers":[{"visibility":"off"}]},
-	{"featureType":"water",
-		"elementType":"labels",
-		"stylers":[{"visibility":"on"},
-			{"lightness":-25},
-			{"saturation":-100}]},
-	{"featureType":"water",
-		"elementType":"geometry",
-		"stylers":[{"hue":"#ffff00"},
-			{"lightness":-25},
-			{"saturation":-97}]}];
+	"stylers":[{"hue":"#FFBB00"},
+	{"saturation":43.400000000000006},
+	{"lightness":37.599999999999994},
+	{"gamma":1}]},{"featureType":"road.highway",
+	"stylers":[{"hue":"#FFC200"},{"saturation":-61.8},
+		{"lightness":45.599999999999994},{"gamma":1}]},
+	{"featureType":"road.arterial","stylers":[{"hue":"#FF0300"},
+		{"saturation":-100},{"lightness":51.19999999999999},
+		{"gamma":1}]},{"featureType":"road.local",
+		"stylers":[{"hue":"#FF0300"},{"saturation":-100},
+			{"lightness":52},{"gamma":1}]},
+	{"featureType":"water","stylers":[{"hue":"#0078FF"},
+		{"saturation":-13.200000000000003},
+		{"lightness":2.4000000000000057},{"gamma":1}]},
+	{"featureType":"poi","stylers":[{"hue":"#00FF6A"},
+		{"saturation":-1.0989010989011234},
+		{"lightness":11.200000000000017},{"gamma":1}]}];
 
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {
-
+.controller('QueueCtrl', function($scope,$ionicHistory) {
+	console.log("just to test all these stuff");
+	$scope.create = function() {
+		/* $location.path('/tab/newpost'); */   /* this variant doesnt work */
+		$state.go("/tab/queue");
+	};
+	$scope.backToMap = function() {
+		$ionicHistory.goBack();
+	};
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
+
 
 .controller('AccountCtrl', function($scope) {
   $scope.settings = {
@@ -57,7 +46,8 @@ angular.module('starter.controllers', [])
 
 
 ////  mapcontroller mapcontroller
-.controller('MapController', function($scope, $http,$ionicLoading, $compile) {
+.controller('MapController', function($scope,$state, $http,$ionicLoading, $compile) {
+	$scope.message = "andy";
     $scope.initialize = function() {
 		console.log("Andy's code running");
 		var initialLocation;
@@ -76,27 +66,69 @@ angular.module('starter.controllers', [])
 			initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
 			map.setCenter(initialLocation);
 
+
+
 			var marker = new google.maps.Marker({
-			position: initialLocation,
-			map: map,
-			title: 'NUS'
+				position: initialLocation,
+				map: map,
+				title: 'NUS'
 			});
 
 			google.maps.event.addListener(marker, 'click', function() {
-			infowindow.open(map,marker);
+				infowindow.open(map,marker);
 			});
 			// 1.305635, 103.773031
 
 			initialLocation = new google.maps.LatLng(1.305635, 103.773031);
 			marker = new google.maps.Marker({
-			position: initialLocation,
-			map: map,
-			title: 'NUS'
+				position: initialLocation,
+				map: map,
+				title: 'NUS'
 			});
 
+			//// for marker adding infowindow and button
+			//// http://stackoverflow.com/questions/2946165/google-map-api-v3-simply-close-an-infowindow
+			//// link above have information that you are gonna need to try
+
+			var constring = "";
+			constring = '<button ng-click="testfun(tab.queue)">TestFun</button>';
+			var compiled = $compile(constring)($scope);
+			var infowindow = new google.maps.InfoWindow({
+				content: compiled[0]
+			});
+			google.maps.event.addListener(marker, 'click', function() {
+				infowindow.open(map, this);
+			});
+
+			//var constring = "";
+			//var compiled ;
+			//var infowindow;
+			/*
+			$http.get(serverurl+"hostest").
+				then(function(response) {
+					// this callback will be called asynchronously
+					// when the response is available
+					constring = "<p>" + response.data.address1+ "</p>" + '<button ng-click="testfun()">TestFun</button>';
+					compiled = $compile(constring)($scope);
+					infowindow = new google.maps.InfoWindow({
+						content: compiled[0]
+					});
+					google.maps.event.addListener(marker, 'click', function() {
+						infowindow.open(map, this);
+					});
+					alert(response.data);
+
+				}, function(response) {
+					// called asynchronously if an error occurs
+					// or server returns response with an error status.
+					console.log("error");
+				});
+			*/
+
+			//// end of marker adding infowindow and button
 			// for searchBox change
 			google.maps.event.addListener(marker, 'click', function() {
-			infowindow.open(map,marker);
+				infowindow.open(map,marker);
 			});
 
 			var input = document.getElementById('pac-input');
@@ -175,7 +207,8 @@ angular.module('starter.controllers', [])
 				}
 			});
 			var geocoder = new google.maps.Geocoder();
-			geocodeAddress(geocoder, map);
+
+			geocodeAddress(geocoder, map);  /// this one seems to be simply to get geodata from address
 			/////// end of route
 
 			/// purely to test HTTP request
@@ -199,8 +232,13 @@ angular.module('starter.controllers', [])
 		}, function() {
 			handleNoGeolocation(browserSupportFlag);
 		});
-    }
+    };
     //google.maps.event.addDomListener(window, 'load', $scope.initialize);
+	$scope.testfun=function(){
+		//localStorage.setItem("firstname", "Andy");
+		//console.log(localStorage.getItem("firstname"));
+		$state.go("tab.queue");
+	};
 
 });
 

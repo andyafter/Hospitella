@@ -37,6 +37,7 @@ angular.module('starter.services', ['ngResource'])
     },
     remove: function(chat) {
       chats.splice(chats.indexOf(chat), 1);
+      console.log("remove of chats");
     },
     get: function(chatId) {
       for (var i = 0; i < chats.length; i++) {
