@@ -1,7 +1,7 @@
 
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY
 
-var serverurl = "http://10.10.3.18:5000/"
+var serverurl = "http://172.23.194.216:5000/"
 
 var styles = [{"featureType":"landscape",
 	"stylers":[{"hue":"#FFBB00"},
@@ -91,7 +91,7 @@ angular.module('starter.controllers', [])
 			//// link above have information that you are gonna need to try
 
 			var constring = "";
-			constring = '<button ng-click="testfun(tab.queue)">TestFun</button>';
+			constring = '<button ng-click="testfun()">TestFun</button>';
 			var compiled = $compile(constring)($scope);
 			var infowindow = new google.maps.InfoWindow({
 				content: compiled[0]
@@ -100,9 +100,18 @@ angular.module('starter.controllers', [])
 				infowindow.open(map, this);
 			});
 
-			//var constring = "";
-			//var compiled ;
-			//var infowindow;
+			$http.get(serverurl+'hostest').
+				then(function(response) {
+					// this callback will be called asynchronously
+					// when the response is available
+
+					// things in the alert is the right way to do all these
+					//alert(response.data.id);
+				}, function(response) {
+					// called asynchronously if an error occurs
+					// or server returns response with an error status.
+					console.log("error");
+				});
 			/*
 			$http.get(serverurl+"hostest").
 				then(function(response) {
