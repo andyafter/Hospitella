@@ -1,7 +1,17 @@
 <ion-view view-title="Queue">
-    <ion-content ng-controller="QueueCtrl">
+    <ion-content ng-controller="QueueCtrl" ng-init="initialize()">
             <ion-nav-back-button class="button-clear" ng-click="backToMap()">
             </ion-nav-back-button>
-        <p id="testpage">test page</p>
+        <div class="card" id="queuecard" style="display: none;">
+                <div class="item item-divider" id="queueheader">
+                    I'm a Header in a Card!
+                </div>
+                <div class="item item-text-wrap" id="queuetext">
+                    This is a basic Card with some text.
+                </div>
+                <div class="item item-divider" id="queuefooter">
+                    I'm a Footer in a Card!
+                </div>
+        </div>
     </ion-content>
 </ion-view>

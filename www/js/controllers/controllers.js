@@ -1,7 +1,7 @@
 
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY
 
-var serverurl = "http://172.23.194.216:5000/"
+var serverurl = "http://10.10.3.76:5000/"
 
 var styles = [{"featureType":"landscape",
 	"stylers":[{"hue":"#FFBB00"},
@@ -236,6 +236,11 @@ angular.module('starter.controllers', [])
 	};
 
 });
+
+
+function makMap(){
+	console.log("something ");
+}
 
 
 // here is an example of using address to get geodata.
