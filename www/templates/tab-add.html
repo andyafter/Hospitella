@@ -1,5 +1,5 @@
 <ion-view view-title="Add">
-  <ion-content ng-controller="AddCtrl" ng-init="init()">
+  <ion-content ng-controller="AddCtrl" ng-init="initadd()">
     <div class="list">
       <!--
       <label class="item item-input">
@@ -9,10 +9,37 @@
         <input type="text" placeholder="Last Name">
       </label>
       -->
-      <label class="item item-input" ng-repeat="param in paramlist" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
-        <input type="text" placeholder="{{param}}" name="{{param}}">
+
+      <!--
+      <label class="item item-input" ng-repeat="param in paramlist" type="item-text-wrap" >
+        <input type="text" placeholder="{{param}}" id="{{param}}">
+      </label>
+      -->
+      <label class="item item-input" type="item-text-wrap" >
+        <input type="text" placeholder="Name" ng-model="form.name">
+      </label>
+      <label class="item item-input" type="item-text-wrap" >
+        <input type="text" placeholder="IC Number" ng-model="form.ic_num">
+      </label>
+      <label class="item item-input" type="item-text-wrap" >
+        <input type="text" placeholder="Queue Number" ng-model="form.queue_num">
+      </label>
+      <label class="item item-input" type="item-text-wrap" >
+        <input type="text" placeholder="Phone Number" ng-model="form.phone_num">
       </label>
     </div>
-    <button class="button button-small button-outline button-positive" ng-click="testfun()">Create Clinic</button>
+    <button class="button button-small button-outline button-positive" ng-click="register(form)">Register</button>
+
+    <div class="card" id="patientcard" style="display: none;">
+      <div class="item item-divider" id="patientname">
+
+      </div>
+      <div class="item item-text-wrap" id="patientinfo">
+        <p id="icnum"></p>
+        <p id="phonenum"></p>
+        <p id="doctor"></p>
+
+      </div>
+    </div>
   </ion-content>
 </ion-view>
