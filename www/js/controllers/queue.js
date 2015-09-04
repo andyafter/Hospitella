@@ -1,6 +1,7 @@
 /**
  * Created by andypan on 21/8/15.
  */
+var posturl = "http://10.10.2.174:5000/";
 angular.module('starter.queue', [])
 
 .controller('QueueCtrl', function($scope,$ionicHistory,$compile,$http) {
@@ -19,12 +20,12 @@ angular.module('starter.queue', [])
         //var content = '<div class="card"> <div class="item item-text-wrap">This is a basic Card.</div> </div>';
         //var compiled =
 
-        var posturl = "http://10.10.3.76:5000/queue";
+
         var postData = {
             'clinic_name':'RIDGEWOOD MEDICAL CLINIC',
             'uuid':device.uuid
         };
-        $http.post(posturl, postData).success(function(data) {
+        $http.post(posturl+'queue', postData).success(function(data) {
             if(data) {
                 //alert(data);
                 var cardcont = "";

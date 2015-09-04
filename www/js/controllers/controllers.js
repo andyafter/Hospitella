@@ -1,7 +1,7 @@
 
 // https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=API_KEY
 
-var serverurl = "http://10.10.3.76:5000/"
+var serverurl = "http://10.10.2.174:5000/"
 
 var styles = [{"featureType":"landscape",
 	"stylers":[{"hue":"#FFBB00"},
@@ -30,7 +30,6 @@ angular.module('starter.controllers', [])
 })
 
 
-
 ////  mapcontroller mapcontroller
 .controller('MapController', function($scope,$state, $http,$ionicLoading, $compile) {
 	$scope.message = "andy";
@@ -48,11 +47,10 @@ angular.module('starter.controllers', [])
 		var map = new google.maps.Map(document.getElementById("map"),
 						  mapOptions);
 
+		//alert("done");
 		navigator.geolocation.getCurrentPosition(function(position) {
 			initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
 			map.setCenter(initialLocation);
-
-
 
 			var marker = new google.maps.Marker({
 				position: initialLocation,
@@ -60,22 +58,29 @@ angular.module('starter.controllers', [])
 				title: 'NUS'
 			});
 
+
+			/*
 			google.maps.event.addListener(marker, 'click', function() {
 				infowindow.open(map,marker);
 			});
+			*/
+
 			// 1.305635, 103.773031
 
+			/*
 			initialLocation = new google.maps.LatLng(1.305635, 103.773031);
 			marker = new google.maps.Marker({
 				position: initialLocation,
 				map: map,
 				title: 'NUS'
 			});
+			*/
 
 			//// for marker adding infowindow and button
 			//// http://stackoverflow.com/questions/2946165/google-map-api-v3-simply-close-an-infowindow
 			//// link above have information that you are gonna need to try
 
+			/*
 			var constring = "";
 			constring = '<button class="button button-small button-outline button-positive" ng-click="testfun()">Queue for this clinic</button>';
 			var compiled = $compile(constring)($scope);
@@ -85,7 +90,10 @@ angular.module('starter.controllers', [])
 			google.maps.event.addListener(marker, 'click', function() {
 				infowindow.open(map, this);
 			});
+			*/
 
+
+			/*
 			$http.get(serverurl+'hostest').
 				then(function(response) {
 					// this callback will be called asynchronously
@@ -98,7 +106,7 @@ angular.module('starter.controllers', [])
 					// or server returns response with an error status.
 					console.log("error");
 				});
-			/*
+
 			$http.get(serverurl+"hostest").
 				then(function(response) {
 					// this callback will be called asynchronously
@@ -141,7 +149,7 @@ angular.module('starter.controllers', [])
 				}
 
 				// Clear out the old markers.
-				markers.forEach(function (marker) {
+				markers.forEach(function(marker) {
 					marker.setMap(null);
 				});
 				markers = [];
@@ -180,28 +188,52 @@ angular.module('starter.controllers', [])
 			map.set('styles', styles);
 			/// end of styles
 
-			$scope.map = map;
+
 
 			// these are all for the route finding
-			var directionsDisplay = new google.maps.DirectionsRenderer();
+			var directionsDisplay = new google.maps.DirectionsRenderer({
+				suppressMarkers: true
+			});
 			directionsDisplay.setMap(map);
-			var haight = new google.maps.LatLng(1.305635, 103.773031);
-			var oceanBeach = new google.maps.LatLng(1.319153, 103.774423);
+
+			var currentPlace = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+			var ridgewood = new google.maps.LatLng(1.316644, 103.778973);
+
+			// marker with button in the infowindow(only for the hospital)
+			marker = new google.maps.Marker({
+				position: ridgewood,
+				map: map,
+				title: 'NUS'
+			});
+			var constring = "";
+			constring += '<p>Ridgewood Medical Clinic</p>'
+			constring = '<button class="button button-small button-outline button-positive" ng-click="testfun()">Queue for this clinic</button>';
+			var compiled = $compile(constring)($scope);
+			var infowindow = new google.maps.InfoWindow({
+				content: compiled[0]
+			});
+			google.maps.event.addListener(marker, 'click', function() {
+				infowindow.open(map, this);
+			});
+			// end of info-window
+
 			var directionsService = new google.maps.DirectionsService();
 			var request = {
-				origin: haight,
-				destination: oceanBeach,
+				origin: currentPlace,
+				destination: ridgewood,
 				// Note that Javascript allows us to access the constant
 				// using square brackets and a string value as its
 				// "property."
 				travelMode: google.maps.TravelMode["DRIVING"]
 			};
+
 			directionsService.route(request, function(response, status) {
 				if (status == google.maps.DirectionsStatus.OK) {
 					directionsDisplay.setDirections(response);
 				}
 			});
 			var geocoder = new google.maps.Geocoder();
+
 
 			geocodeAddress(geocoder, map);  /// this one seems to be simply to get geodata from address
 			/////// end of route
@@ -223,6 +255,9 @@ angular.module('starter.controllers', [])
 			*/
 
 			/// end of testing
+
+
+			$scope.map = map;
 			console.log("success");
 		}, function() {
 			handleNoGeolocation(browserSupportFlag);
@@ -245,8 +280,9 @@ function makMap(){
 
 // here is an example of using address to get geodata.
 function geocodeAddress(geocoder, resultsMap) {
-	var address = "national university of singapore"
+	var address = "RIDGEWOOD MEDICAL CLINIC"
 	//var address = "BLK 501 BISHAN STREET 11 #01-376";
+	//alert("ran");
 	geocoder.geocode({'address': address}, function(results, status) {
 		if (status === google.maps.GeocoderStatus.OK) {
 			resultsMap.setCenter(results[0].geometry.location);
@@ -254,6 +290,7 @@ function geocodeAddress(geocoder, resultsMap) {
 				map: resultsMap,
 				position: results[0].geometry.location
 			});
+			console.log(resultsMap.position);
 		} else {
 			// if there is no result the code will go to this function.
 			alert('Geocode was not successful for the following reason: ' + status);
