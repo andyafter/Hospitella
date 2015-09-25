@@ -17,7 +17,7 @@ angular.module('starter.registration', [])
     $scope.name="andyafter";
     $scope.paramlist = paramlist;
     $scope.initadd = function () {
-
+        console.log("blabla");
     }    
 
     $scope.register = function(formData){

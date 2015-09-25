@@ -15,6 +15,9 @@ angular.module('starter.nearby', [])
     $scope.remove = function(chat) {
         Chats.remove(chat);
     };
+    $scope.init = function(){
+        console.log("chats init");
+    }
 })
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
     $scope.chat = Chats.get($stateParams.chatId);
